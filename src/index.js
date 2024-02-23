@@ -6,15 +6,30 @@ function isPatternMismatch(pattern, value) {
   return !pattern.test(value);
 }
 
+function isEmpty(value) {
+  return !value;
+}
+
 function emailValidator() {
   const type = 'email';
   const regex = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/;
 
   function validate() {
-    const { value } = form.querySelector('#email');
-    if (isPatternMismatch(regex, value)) {
-      console.log('pattern mismatch');
+    const email = form.querySelector('#email');
+    const { value } = email;
+
+    if (isEmpty(value)) {
+      email.setCustomValidity('You need to enter an email address.');
+      return false;
     }
+
+    if (isPatternMismatch(regex, value)) {
+      email.setCustomValidity('You need to enter a valid email.');
+      return false;
+    }
+
+    email.setCustomValidity('');
+    return true;
   }
 
   return {
@@ -26,13 +41,19 @@ function emailValidator() {
 const inputValidators = [emailValidator()];
 
 function checkValidity(e) {
-  const inputType = e.target.name;
-  const inputValue = e.target.value;
-
-  const targetValidator = inputValidators.find(
-    (input) => input.type === inputType,
-  );
-  targetValidator.validate(inputValue);
+  if (e.target.tagName === 'INPUT') {
+    const inputType = e.target.name;
+    const targetValidator = inputValidators.find(
+      (input) => input.type === inputType,
+    );
+    targetValidator.validate();
+  } else {
+    inputValidators.forEach((input) => {
+      input.validate();
+    });
+  }
 }
 
+window.addEventListener('load', checkValidity);
 form.addEventListener('input', checkValidity);
+form.addEventListener('submit', checkValidity);

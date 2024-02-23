@@ -1,10 +1,45 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-</head>
-<body>
-  
-</body>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  </head>
+  <body>
+    <form>
+      <ul>
+        <li>
+          <label for="email">Email <span aria-label="required">*</span></label>
+          <input type="text" id="email" name="email" />
+        </li>
+        <li>
+          <label for="country"
+            >Country <span aria-label="required">*</span></label
+          >
+          <input type="text" id="country" name="country" />
+        </li>
+        <li>
+          <label for="zipcode"
+            >Zip Code <span aria-label="required">*</span></label
+          >
+          <input type="text" id="zipcode" name="zipcode" />
+        </li>
+        <li>
+          <label for="password"
+            >Password <span aria-label="required">*</span></label
+          >
+          <input type="text" id="password" name="password" />
+        </li>
+        <li>
+          <label for="password-confirmation"
+            >Password Confirmation <span aria-label="required">*</span></label
+          >
+          <input
+            type="text"
+            id="password-confirmation"
+            name="password-confirmation"
+          />
+        </li>
+      </ul>
+    </form>
+  </body>
 </html>

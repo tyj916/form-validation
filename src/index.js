@@ -15,20 +15,20 @@ function emailValidator() {
   const regex = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/;
 
   function validate() {
-    const email = form.querySelector('#email');
-    const { value } = email;
+    const input = form.querySelector('#email');
+    const { value } = input;
 
     if (isEmpty(value)) {
-      email.setCustomValidity('You need to enter an email address.');
+      input.setCustomValidity('You need to enter an email address.');
       return false;
     }
 
     if (isPatternMismatch(regex, value)) {
-      email.setCustomValidity('You need to enter a valid email.');
+      input.setCustomValidity('You need to enter a valid email.');
       return false;
     }
 
-    email.setCustomValidity('');
+    input.setCustomValidity('');
     return true;
   }
 
@@ -38,7 +38,29 @@ function emailValidator() {
   };
 }
 
-const inputValidators = [emailValidator()];
+function countryValidator() {
+  const type = 'country';
+
+  function validate() {
+    const input = form.querySelector('#country');
+    const { value } = input;
+
+    if (isEmpty(value)) {
+      input.setCustomValidity('You need to select a country.');
+      return false;
+    }
+
+    input.setCustomValidity('');
+    return true;
+  }
+
+  return {
+    type,
+    validate,
+  };
+}
+
+const inputValidators = [emailValidator(), countryValidator()];
 
 function checkValidity(e) {
   if (e.target.tagName === 'INPUT') {

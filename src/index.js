@@ -1,5 +1,7 @@
 import './style.css';
 
+const countries = require('./country-list.json');
+
 const form = document.querySelector('form');
 
 function isPatternMismatch(pattern, value) {
@@ -41,12 +43,22 @@ function emailValidator() {
 function countryValidator() {
   const type = 'country';
 
+  function hasCountry(value) {
+    const countriesName = countries.map((country) => country.name);
+    return countriesName.includes(value);
+  }
+
   function validate() {
     const input = form.querySelector('#country');
     const { value } = input;
 
     if (isEmpty(value)) {
       input.setCustomValidity('You need to select a country.');
+      return false;
+    }
+
+    if (!hasCountry(value)) {
+      input.setCustomValidity('You need to enter a valid country.');
       return false;
     }
 
@@ -60,7 +72,39 @@ function countryValidator() {
   };
 }
 
-const inputValidators = [emailValidator(), countryValidator()];
+function zipcodeValidator() {
+  const type = 'zipcode';
+  const regex = /^[a-zA-Z0-9]{3,5}([-\s]?[a-zA-Z0-9]{3,5})?$/;
+
+  function validate() {
+    const input = form.querySelector('#zipcode');
+    const { value } = input;
+
+    if (isEmpty(value)) {
+      input.setCustomValidity('You need to select a zip code.');
+      return false;
+    }
+
+    if (isPatternMismatch(regex, value)) {
+      input.setCustomValidity('You need to enter a valid zip code.');
+      return false;
+    }
+
+    input.setCustomValidity('');
+    return true;
+  }
+
+  return {
+    type,
+    validate,
+  };
+}
+
+const inputValidators = [
+  emailValidator(),
+  countryValidator(),
+  zipcodeValidator(),
+];
 
 function checkValidity(e) {
   if (e.target.tagName === 'INPUT') {

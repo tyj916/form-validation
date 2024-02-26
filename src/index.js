@@ -112,7 +112,10 @@ function checkValidity(e) {
     const targetValidator = inputValidators.find(
       (input) => input.type === inputType,
     );
-    targetValidator.validate();
+    const isValid = targetValidator.validate();
+    if (!isValid) {
+      e.target.reportValidity();
+    }
   } else {
     inputValidators.forEach((input) => {
       input.validate();

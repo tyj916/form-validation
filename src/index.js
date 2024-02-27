@@ -12,6 +12,10 @@ function isEmpty(value) {
   return !value;
 }
 
+function isRangeUnderflow(value, range) {
+  return value.length < range;
+}
+
 function emailValidator() {
   const type = 'email';
   const regex = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/;
@@ -100,10 +104,73 @@ function zipcodeValidator() {
   };
 }
 
+function passwordValidator() {
+  const type = 'password';
+  const regex =
+    /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
+
+  function validate() {
+    const input = form.querySelector('#password');
+    const { value } = input;
+
+    if (isEmpty(value)) {
+      input.setCustomValidity('You need to enter a password.');
+      return false;
+    }
+
+    if (isRangeUnderflow(value, 8)) {
+      input.setCustomValidity(
+        'Your password needs to contain at least 8 characters.',
+      );
+      return false;
+    }
+
+    if (isPatternMismatch(regex, value)) {
+      input.setCustomValidity(
+        'Your password needs to contain at least 1 uppercase letter, 1 lowercase letter, 1 number and 1 special character.',
+      );
+      return false;
+    }
+
+    input.setCustomValidity('');
+    return true;
+  }
+
+  return {
+    type,
+    validate,
+  };
+}
+
+function passwordConfirmationValidator() {
+  const type = 'password-confirmation';
+
+  function validate() {
+    const input = form.querySelector('#password-confirmation');
+    const password = form.querySelector('#password');
+    const { value } = input;
+
+    if (value !== password.value) {
+      input.setCustomValidity('Password do not match.');
+      return false;
+    }
+
+    input.setCustomValidity('');
+    return true;
+  }
+
+  return {
+    type,
+    validate,
+  };
+}
+
 const inputValidators = [
   emailValidator(),
   countryValidator(),
   zipcodeValidator(),
+  passwordValidator(),
+  passwordConfirmationValidator(),
 ];
 
 function checkValidity(e) {
